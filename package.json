@@ -1,23 +1,23 @@
 {
   "name": "resume-parser",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Simple NodeJs library to parse Resume / CV to JSON.",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node src/test.js",
     "lint": "prettier --single-quote --trailing-comma es5 --write src/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Parminder Klair",
   "license": "ISC",
-  "devDependencies": {
-    "prettier": "1.10.2"
-  },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "request": "^2.83.0",
     "textract": "^2.2.0",
     "tracer": "^0.8.11",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "prettier": "1.10.2"
   }
 }
