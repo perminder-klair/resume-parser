@@ -1,36 +1,37 @@
-var _          = require('underscore'),
-    resume     = require('../Resume'),
-    fs         = require('fs'),
-    dictionary = require('../dictionary.js'),
-    logger     = require('tracer').colorConsole();
+var _ = require('underscore'),
+  resume = require('../Resume'),
+  fs = require('fs'),
+  dictionary = require('../../dictionary.js'),
+  logger = require('tracer').colorConsole();
 
 var profilesWatcher = {
   // for change value by reference
-  inProgress: 0
+  inProgress: 0,
 };
 
 module.exports = {
-  parse: parse
+  parse: parse,
 };
 
 function makeRegExpFromDictionary() {
   var regularRules = {
     titles: {},
     profiles: [],
-    inline: {}
+    inline: {},
   };
 
-  _.forEach(dictionary.titles, function (titles, key) {
+  _.forEach(dictionary.titles, function(titles, key) {
     regularRules.titles[key] = [];
-    _.forEach(titles, function (title) {
+    _.forEach(titles, function(title) {
       regularRules.titles[key].push(title.toUpperCase());
-      regularRules.titles[key].push(title[0].toUpperCase() + title.substr(1, title.length));
+      regularRules.titles[key].push(
+        title[0].toUpperCase() + title.substr(1, title.length)
+      );
     });
   });
 
-  _.forEach(dictionary.profiles, function (profile) {
-    var profileHandler,
-        profileExpr;
+  _.forEach(dictionary.profiles, function(profile) {
+    var profileHandler, profileExpr;
 
     if (_.isArray(profile)) {
       if (_.isFunction(profile[1])) {
@@ -38,7 +39,10 @@ function makeRegExpFromDictionary() {
       }
       profile = profile[0];
     }
-    profileExpr = "((?:https?:\/\/)?(?:www\\.)?" + profile.replace('.', "\\.") + "[\/\\w \\.-]*)";
+    profileExpr =
+      '((?:https?://)?(?:www\\.)?' +
+      profile.replace('.', '\\.') +
+      '[/\\w \\.-]*)';
     if (_.isFunction(profileHandler)) {
       regularRules.profiles.push([profileExpr, profileHandler]);
     } else {
@@ -46,8 +50,8 @@ function makeRegExpFromDictionary() {
     }
   });
 
-  _.forEach(dictionary.inline, function (expr, name) {
-    regularRules.inline[name] = expr + ":?[\\s]*(.*)";
+  _.forEach(dictionary.inline, function(expr, name) {
+    regularRules.inline[name] = expr + ':?[\\s]*(.*)';
   });
 
   return _.extend(dictionary, regularRules);
@@ -57,11 +61,10 @@ function makeRegExpFromDictionary() {
 makeRegExpFromDictionary();
 
 function parse(PreparedFile, cbReturnResume) {
-
   var rawFileData = PreparedFile.raw,
-      Resume      = new resume(),
-      rows        = rawFileData.split("\n"),
-      row;
+    Resume = new resume(),
+    rows = rawFileData.split('\n'),
+    row;
 
   // save prepared file text (for debug)
   //fs.writeFileSync('./parsed/'+PreparedFile.name + '.txt', rawFileData);
@@ -80,11 +83,10 @@ function parse(PreparedFile, cbReturnResume) {
   }
 
   if (_.isFunction(cbReturnResume)) {
-
     // wait until download and handle internet profile
     var i = 0;
-    var checkTimer = setInterval(function () {
-      i++
+    var checkTimer = setInterval(function() {
+      i++;
       /**
        * FIXME:profilesWatcher.inProgress not going down to 0 for txt files
        */
@@ -114,7 +116,7 @@ function restoreTextByRows(rowNum, allRows) {
     rowNum++;
   } while (rowNum < allRows.length);
 
-  return rows.join("\n");
+  return rows.join('\n');
 }
 
 /**
@@ -134,7 +136,7 @@ function countWords(str) {
 function parseDictionaryInline(Resume, row) {
   var find;
 
-  _.forEach(dictionary.inline, function (expression, key) {
+  _.forEach(dictionary.inline, function(expression, key) {
     find = new RegExp(expression).exec(row);
     if (find) {
       Resume.addKey(key.toLowerCase(), find[1]);
@@ -149,10 +151,10 @@ function parseDictionaryInline(Resume, row) {
  */
 function parseDictionaryRegular(data, Resume) {
   var regularDictionary = dictionary.regular,
-      find;
+    find;
 
-  _.forEach(regularDictionary, function (expressions, key) {
-    _.forEach(expressions, function (expression) {
+  _.forEach(regularDictionary, function(expressions, key) {
+    _.forEach(expressions, function(expression) {
       find = new RegExp(expression).exec(data);
       if (find) {
         Resume.addKey(key.toLowerCase(), find[0]);
@@ -168,26 +170,29 @@ function parseDictionaryRegular(data, Resume) {
  * @param rowIdx
  */
 function parseDictionaryTitles(Resume, rows, rowIdx) {
-  var allTitles        = _.flatten(_.toArray(dictionary.titles)).join('|'),
-      searchExpression = '',
-      row              = rows[rowIdx],
-      ruleExpression,
-      isRuleFound,
-      result;
+  var allTitles = _.flatten(_.toArray(dictionary.titles)).join('|'),
+    searchExpression = '',
+    row = rows[rowIdx],
+    ruleExpression,
+    isRuleFound,
+    result;
 
-  _.forEach(dictionary.titles, function (expressions, key) {
+  _.forEach(dictionary.titles, function(expressions, key) {
     expressions = expressions || [];
     // means, that titled row is less than 5 words
     if (countWords(row) <= 5) {
-      _.forEach(expressions, function (expression) {
+      _.forEach(expressions, function(expression) {
         ruleExpression = new RegExp(expression);
         isRuleFound = ruleExpression.test(row);
 
         if (isRuleFound) {
           allTitles = _.without(allTitles.split('|'), key).join('|');
-          searchExpression = '(?:' + expression + ')((.*\n)+?)(?:' + allTitles + '|{end})';
+          searchExpression =
+            '(?:' + expression + ')((.*\n)+?)(?:' + allTitles + '|{end})';
           // restore remaining text to search in relevant part of text
-          result = new RegExp(searchExpression, 'gm').exec(restoreTextByRows(rowIdx, rows));
+          result = new RegExp(searchExpression, 'gm').exec(
+            restoreTextByRows(rowIdx, rows)
+          );
 
           if (result) {
             Resume.addKey(key, result[1]);
@@ -206,10 +211,10 @@ function parseDictionaryTitles(Resume, rows, rowIdx) {
  */
 function parseDictionaryProfiles(row, Resume) {
   var regularDictionary = dictionary.profiles,
-      find,
-      modifiedRow       = row;
+    find,
+    modifiedRow = row;
 
-  _.forEach(regularDictionary, function (expression) {
+  _.forEach(regularDictionary, function(expression) {
     var expressionHandler;
 
     if (_.isArray(expression)) {
@@ -220,7 +225,7 @@ function parseDictionaryProfiles(row, Resume) {
     }
     find = new RegExp(expression).exec(row);
     if (find) {
-      Resume.addKey('profiles', find[0] + "\n");
+      Resume.addKey('profiles', find[0] + '\n');
       modifiedRow = row.replace(find[0], '');
       if (_.isFunction(expressionHandler)) {
         profilesWatcher.inProgress++;
