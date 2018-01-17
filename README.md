@@ -18,4 +18,4 @@ ResumeParser.parseResume('./files/resume.doc', './files/compiled');
 
 ## Thanks
 
-Many thanks to (https://github.com/likerRr/code4goal-resume-parser)[https://github.com/likerRr/code4goal-resume-parser] for this amazing library.
+Many thanks to [https://github.com/likerRr/code4goal-resume-parser](https://github.com/likerRr/code4goal-resume-parser) for this amazing library.
