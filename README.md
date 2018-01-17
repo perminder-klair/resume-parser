@@ -30,5 +30,5 @@ All 'action' are by building `src/dictionary.js` file. For now it has only basic
 
 ## Thanks
 
-Many thanks to [https://github.com/likerRr](Alexey Lizurchik) for this amazing library. 
+Many thanks to [Alexey Lizurchik](https://github.com/likerRr) for this amazing library. 
 [https://github.com/likerRr/code4goal-resume-parser](https://github.com/likerRr/code4goal-resume-parser) 
