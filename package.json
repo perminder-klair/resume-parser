@@ -1,6 +1,6 @@
 {
   "name": "resume-parser",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Simple NodeJs library to parse Resume / CV to JSON.",
   "main": "src/index.js",
   "author": "Parminder Klair",
