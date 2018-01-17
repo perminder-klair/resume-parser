@@ -28,7 +28,7 @@ At this moment application will work fine, but! By default it supports only `.TX
 
 All 'action' are by building `src/dictionary.js` file. For now it has only basics rules, but it's very flexible (although a bit complicated) and extensible. Just put your rule according to existing and following main principles and enjoy!
 
-## Thanks
+## Source
 
 Many thanks to [Alexey Lizurchik](https://github.com/likerRr) for this amazing library. 
 [https://github.com/likerRr/code4goal-resume-parser](https://github.com/likerRr/code4goal-resume-parser) 
