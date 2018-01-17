@@ -6,7 +6,7 @@ A Simple NodeJs library to parse Resume / CV to JSON.
 
 Install using
 
-`yarn install resume-parser`
+`npm install resume-parser`
 
 Parse resume:
 
