@@ -14,11 +14,15 @@ module.exports.run = processFile;
  * @param cbAfterProcessing
  */
 function processFile(file, cbAfterProcessing) {
-  extractText(file, function(PreparedFile) {
+  extractText(file, function(PreparedFile, error) {
     if (_.isFunction(cbAfterProcessing)) {
+      if (error) {
+        return cbAfterProcessing(null, error);
+      }
       cbAfterProcessing(PreparedFile);
     } else {
-      return logger.error('cbAfterProcessing should be a function');
+      logger.error('cbAfterProcessing should be a function');
+      cbAfterProcessing(null, 'cbAfterProcessing should be a function');
     }
   });
 }
@@ -56,14 +60,16 @@ function extractText(file, cbAfterExtract) {
     data
   ) {
     if (err) {
-      return logger.error(err);
+      logger.error(err);
+      return cbAfterExtract(null, err);
     }
     if (_.isFunction(cbAfterExtract)) {
       data = cleanTextByRows(data);
       var File = new PreparedFile(file, data.replace(/^\s/gm, ''));
       cbAfterExtract(File);
     } else {
-      return logger.error('cbAfterExtract should be a function');
+      logger.error('cbAfterExtract should be a function');
+      return cbAfterExtract(null, 'cbAfterExtract should be a function');
     }
   });
 }

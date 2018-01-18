@@ -36,7 +36,7 @@ ParseBoy.prototype.storeResume = function(
   PreparedFile.addResume(Resume);
 
   if (!_.isFunction(cbOnSaved)) {
-    return console.error('cbOnSaved should be a function');
+    return logger.error('cbOnSaved should be a function');
   }
   PreparedFile.saveResume(path, cbOnSaved);
 };
