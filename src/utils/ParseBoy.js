@@ -20,6 +20,16 @@ ParseBoy.prototype.parseFile = function(PreparedFile, cbGetResume) {
   parser.parse(PreparedFile, cbGetResume);
 };
 
+ParseBoy.prototype.parseUrl = function(PreparedData, cbGetResume) {
+  logger.trace("I'm working with file buffer now");
+  parser.parse(
+    {
+      raw: PreparedData,
+    },
+    cbGetResume
+  );
+};
+
 /**
  *
  * @param PreparedFile

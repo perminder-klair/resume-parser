@@ -6,7 +6,8 @@ const path = require('path'),
   fs = require('fs'),
   logger = require('tracer').colorConsole();
 
-module.exports.run = processFile;
+module.exports.runFile = processFile;
+module.exports.runUrl = processUrl;
 
 /**
  *
@@ -14,12 +15,26 @@ module.exports.run = processFile;
  * @param cbAfterProcessing
  */
 function processFile(file, cbAfterProcessing) {
-  extractText(file, function(PreparedFile, error) {
+  extractTextFile(file, function(PreparedFile, error) {
     if (_.isFunction(cbAfterProcessing)) {
       if (error) {
         return cbAfterProcessing(null, error);
       }
       cbAfterProcessing(PreparedFile);
+    } else {
+      logger.error('cbAfterProcessing should be a function');
+      cbAfterProcessing(null, 'cbAfterProcessing should be a function');
+    }
+  });
+}
+
+function processUrl(url, cbAfterProcessing) {
+  extractTextUrl(url, function(data, error) {
+    if (_.isFunction(cbAfterProcessing)) {
+      if (error) {
+        return cbAfterProcessing(null, error);
+      }
+      cbAfterProcessing(data);
     } else {
       logger.error('cbAfterProcessing should be a function');
       cbAfterProcessing(null, 'cbAfterProcessing should be a function');
@@ -53,7 +68,7 @@ function cleanTextByRows(data) {
  * @param file
  * @param cbAfterExtract
  */
-function extractText(file, cbAfterExtract) {
+function extractTextFile(file, cbAfterExtract) {
   logger.trace(file);
   textract.fromFileWithPath(file, { preserveLineBreaks: true }, function(
     err,
@@ -67,6 +82,23 @@ function extractText(file, cbAfterExtract) {
       data = cleanTextByRows(data);
       var File = new PreparedFile(file, data.replace(/^\s/gm, ''));
       cbAfterExtract(File);
+    } else {
+      logger.error('cbAfterExtract should be a function');
+      return cbAfterExtract(null, 'cbAfterExtract should be a function');
+    }
+  });
+}
+
+function extractTextUrl(url, cbAfterExtract) {
+  logger.trace(url);
+  textract.fromUrl(url, { preserveLineBreaks: true }, function(err, data) {
+    if (err) {
+      logger.error(err);
+      return cbAfterExtract(null, err);
+    }
+    if (_.isFunction(cbAfterExtract)) {
+      data = cleanTextByRows(data);
+      cbAfterExtract(data);
     } else {
       logger.error('cbAfterExtract should be a function');
       return cbAfterExtract(null, 'cbAfterExtract should be a function');
