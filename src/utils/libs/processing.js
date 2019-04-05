@@ -2,7 +2,7 @@
 const path = require('path'),
   _ = require('underscore'),
   textract = require('textract'),
-  mime = require('mime'),
+  mime = require('mime-types'),
   fs = require('fs'),
   logger = require('tracer').colorConsole();
 
