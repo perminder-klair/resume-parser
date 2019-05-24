@@ -13,10 +13,10 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Mihaylov93/resume-parser.git"
+    "url": "https://github.com/perminder-klair/resume-parser"
   },
   "bugs": {
-    "url": "https://github.com/Mihaylov93/resume-parser/issues"
+    "url": "https://github.com/perminder-klair/resume-parser/issues"
   },
   "homepage": "https://github.com/perminder-klair/resume-parser",
   "keywords": [
