@@ -13,7 +13,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/perminder-klair/resume-parser"
+    "url": "https://github.com/perminder-klair/resume-parser.git"
   },
   "bugs": {
     "url": "https://github.com/perminder-klair/resume-parser/issues"
