@@ -5,15 +5,12 @@
   "main": "src/index.js",
   "author": "Parminder Klair",
   "contributors": [
-    {
-      "name": "Petar Petrov",
-      "url": "https://github.com/Mihaylov93"
-    }
+    "Petar Petrov (https://github.com/Mihaylov93)"
   ],
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/perminder-klair/resume-parser.git"
+    "url": "git+https://github.com/perminder-klair/resume-parser.git"
   },
   "bugs": {
     "url": "https://github.com/perminder-klair/resume-parser/issues"
