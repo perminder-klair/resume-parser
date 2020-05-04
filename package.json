@@ -1,13 +1,16 @@
 {
   "name": "resume-parser",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A Simple NodeJs library to parse Resume / CV to JSON.",
   "main": "src/index.js",
   "author": "Parminder Klair",
+  "contributors": [
+    "Petar Petrov (https://github.com/Mihaylov93)"
+  ],
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/perminder-klair/resume-parser.git"
+    "url": "git+https://github.com/perminder-klair/resume-parser.git"
   },
   "bugs": {
     "url": "https://github.com/perminder-klair/resume-parser/issues"
